@@ -17,9 +17,9 @@ namespace EmployeeDomain.Repository
             Employees.Add(employee.Id,employee);
         }
 
-        public void Delete(Employee employee)
+        public void Delete(Guid id)
         {
-            Employees.Remove(employee.Id);
+            Employees.Remove(id);
         }
 
         public List<Employee> Get()

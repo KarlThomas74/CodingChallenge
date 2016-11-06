@@ -10,6 +10,6 @@ namespace EmployeeDomain
         Employee GetBy(Guid id);
         void Update(Employee employee);
         void Insert(Employee employee);
-        void Delete(Employee employee);
+        void Delete(Guid employee);
     }
 }

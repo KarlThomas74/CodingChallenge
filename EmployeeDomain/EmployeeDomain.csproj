@@ -41,8 +41,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
     <Compile Include="EmployeeService.cs" />
+    <Compile Include="IEmployeeService.cs" />
     <Compile Include="Repository\EmployeeInMemoryRepository.cs" />
     <Compile Include="Repository\IEmployeeRepository.cs" />
     <Compile Include="Models\Beneficiary.cs" />

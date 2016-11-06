@@ -25,5 +25,24 @@ namespace BenefitsRUs.Models.Mappers
             employee.Dependents = employeeViewModel.Dependents.Select(d => d.ToBeneficiary()).ToList();
             return employee;
         }
+
+        public static BeneficiaryViewModel ToBeneficiarViewModel(this Beneficiary beneficiary)
+        {
+            return new BeneficiaryViewModel()
+            {
+                FirstName = beneficiary.FirstName,
+                MiddleName = beneficiary.MiddleName,
+                LastName = beneficiary.LastName,
+                Cost = beneficiary.Cost
+            };
+        }
+
+        public static EmployeeViewModel ToEmployeeViewModel(this Employee employee)
+        {
+            EmployeeViewModel employeeViewModel = (EmployeeViewModel)employee.ToBeneficiarViewModel();
+            employee.Dependents = employeeViewModel.Dependents.Select(d => d.ToBeneficiary()).ToList();
+            return employeeViewModel;
+        }
+
     }
 }

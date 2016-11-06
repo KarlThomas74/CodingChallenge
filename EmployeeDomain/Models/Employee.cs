@@ -8,7 +8,7 @@ namespace EmployeeDomain.Models
 {
     public class Employee : Beneficiary
     {
-        public List<Beneficiary> Beneficiaries { get; set; }
+        public List<Beneficiary> Dependents { get; set; }
 
     }
 }

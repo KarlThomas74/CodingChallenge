@@ -7,6 +7,13 @@ namespace EmployeeDomain
     public class EmployeeService : IEmployeeService
     {
         private IEmployeeRepository _repository;
+
+        public EmployeeService(IEmployeeRepository repository)
+        {
+            _repository = repository;
+        }
+
+
         public List<Employee> Get()
         {
             return _repository.Get();
@@ -22,9 +29,14 @@ namespace EmployeeDomain
             _repository.Update(employee);
         }
 
-        public void Delete(Employee employee)
+        public void Delete(Guid id)
         {
-            _repository.Delete(employee);
+            _repository.Delete(id);
+        }
+
+        public void Insert(Employee employee)
+        {
+            _repository.Insert(employee);
         }
     }
 }

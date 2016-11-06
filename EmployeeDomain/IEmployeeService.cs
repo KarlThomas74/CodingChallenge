@@ -9,6 +9,7 @@ namespace EmployeeDomain
         List<Employee> Get();
         Employee GetBy(Guid id);
         void Update(Employee employee);
-        void Delete(Employee employee);
+        void Delete(Guid employee);
+        void Insert(Employee toEmployee);
     }
 }
