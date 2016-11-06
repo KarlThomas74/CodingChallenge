@@ -14,9 +14,9 @@ namespace BenefitsRUs.Controllers
 
         private readonly IEmployeeService _employeeService;
 
-        public EmployeeController()
+        public EmployeeController(IEmployeeService employeeService)
         {
-            _employeeService = new EmployeeService(new EmployeeInMemoryRepository());    
+            _employeeService = employeeService;
         }
 
         public List<EmployeeViewModel> Get()
