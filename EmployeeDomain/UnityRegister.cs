@@ -1,4 +1,5 @@
-﻿using Microsoft.Practices.Unity;
+﻿using EmployeeDomain.Repository;
+using Microsoft.Practices.Unity;
 
 namespace EmployeeDomain
 {
@@ -8,6 +9,7 @@ namespace EmployeeDomain
         {
             container.RegisterType<IEmployeeService, EmployeeService>();
             container.RegisterType<IEmployeeRepository, IEmployeeRepository>();
+            container.RegisterType<IDataStore, DataStore>();
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using EmployeeDomain.Models;
 
 namespace EmployeeDomain
@@ -21,11 +22,24 @@ namespace EmployeeDomain
 
         public Employee GetBy(Guid id)
         {
+
+            if (id == Guid.Empty)
+            {
+                throw new Exception("Id cannot be empty");
+            }
             return _repository.GetBy(id);
         }
 
         public void Update(Employee employee)
         {
+            if (employee.Id == null)
+            {
+                throw new Exception("Employee ID cannot be null for updates.");
+            }
+            if (employee.Dependents.Any(d => d.Id == null))
+            {
+                throw new Exception("Employees dependents cannot have null id");
+            }
             _repository.Update(employee);
         }
 
@@ -36,6 +50,15 @@ namespace EmployeeDomain
 
         public void Insert(Employee employee)
         {
+            if (employee.Id != null)
+            {
+                throw new Exception("Employee ID must be null for inserts.");
+            }
+            if (employee.Dependents.Any(d => d.Id != null))
+            {
+                throw new Exception("Employees dependents must have null id");
+            }
+
             _repository.Insert(employee);
         }
     }

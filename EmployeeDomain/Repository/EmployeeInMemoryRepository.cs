@@ -8,13 +8,19 @@ namespace EmployeeDomain.Repository
     public class EmployeeInMemoryRepository : IEmployeeRepository
     {
 
-        private static Dictionary<Guid, Employee> Employees = new Dictionary<Guid, Employee>();
+        private  Dictionary<Guid, Employee> Employees = new Dictionary<Guid, Employee>();
 
+
+        public EmployeeInMemoryRepository(IDataStore dataStore)
+        {
+            Employees = dataStore.Employees;
+        }
 
         public void Insert(Employee employee)
         {
             employee.Id = new Guid();
-            Employees.Add(employee.Id,employee);
+            employee.Dependents.ForEach(d => d.Id = new Guid());
+            Employees.Add(employee.Id.Value,employee);
         }
 
         public void Delete(Guid id)
@@ -29,12 +35,12 @@ namespace EmployeeDomain.Repository
 
         public Employee GetBy(Guid id)
         {
-            return Employees.Values.Where(e => e.Id == id).SingleOrDefault();
+            return Employees.Values.SingleOrDefault(e => e.Id == id);
         }
 
         public void Update(Employee employee)
-        {
-            Employees[employee.Id] = employee;
+        {        
+            Employees[employee.Id.Value] = employee;
         }
     }
 }

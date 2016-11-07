@@ -10,5 +10,15 @@ namespace EmployeeDomain.Models
     {
         public List<Beneficiary> Dependents { get; set; }
 
+        public override bool Equals(object obj)
+        {
+            var employee =  obj as Employee;
+            if (employee == null)
+            {
+                return false;
+            }
+            return base.Equals(obj) && employee.Dependents.SequenceEqual(Dependents);
+        }
     }
+
 }
