@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using Castle.Core.Internal;
 using EmployeeDomain.Models;
 using Moq;
 using NUnit.Framework;
@@ -105,7 +107,7 @@ namespace EmployeeDomain.Tests
 
             var expected = GetTestData()[0];
             expected.LastName = "Ono";
-            expected.Dependents[0].Id = null;
+            expected.Dependents.First().Id = null;
 
             Assert.Throws<Exception>(() => service.Update(expected), "Employees dependents cannot have null id");
 
@@ -193,7 +195,38 @@ namespace EmployeeDomain.Tests
 
         private List<Employee> GetTestData()
         {
-            return new List<Employee>()
+            var dependents1 = new List<Beneficiary>()
+            {
+                new Beneficiary()
+                {
+                    Id = Guid.NewGuid(),
+                    FirstName = "John",
+                    LastName = "Lennon"
+                },
+                new Beneficiary()
+                {
+                    Id = Guid.NewGuid(),
+                    FirstName = "Paul",
+                    LastName = "McCartney"
+                },
+            };
+
+            var dependents2 = new List<Beneficiary>()
+            {
+                new Beneficiary()
+                {
+                    Id = Guid.NewGuid(),
+                    FirstName = "George",
+                    LastName = "Harrison"
+                },
+                new Beneficiary()
+                {
+                    Id = Guid.NewGuid(),
+                    FirstName = "Ringo",
+                    LastName = "Starr"
+                },
+            };
+            var testData = new List<Employee>()
             {
                 new Employee()
                 {
@@ -201,22 +234,6 @@ namespace EmployeeDomain.Tests
                     FirstName = "John",
                     MiddleName = "D",
                     LastName = "Doe",
-                    Cost = 2000,
-                    Dependents = new List<Beneficiary>()
-                    {
-                        new Beneficiary()
-                        {
-                            Id = Guid.NewGuid(),
-                            FirstName = "John",
-                            LastName = "Lennon"
-                        },
-                        new Beneficiary()
-                        {
-                            Id = Guid.NewGuid(),
-                            FirstName = "Paul",
-                            LastName = "McCartney"
-                        },
-                    }
                 },
                 new Employee()
                 {
@@ -224,24 +241,11 @@ namespace EmployeeDomain.Tests
                     FirstName = "Jane",
                     MiddleName = "D",
                     LastName = "Doe",
-                    Cost = 2000,
-                    Dependents = new List<Beneficiary>()
-                    {
-                        new Beneficiary()
-                        {
-                            Id = Guid.NewGuid(),
-                            FirstName = "George",
-                            LastName = "Harrison"
-                        },
-                        new Beneficiary()
-                        {
-                            Id = Guid.NewGuid(),
-                            FirstName = "Ringo",
-                            LastName = "Starr"
-                        },
-                    }
                 }
             };
+            dependents1.ForEach(d => testData[0].AddDependent(d));
+            dependents2.ForEach(d => testData[1].AddDependent(d));
+            return testData;
         }
     }
 }

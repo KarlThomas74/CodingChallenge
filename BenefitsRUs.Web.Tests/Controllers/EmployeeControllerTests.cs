@@ -5,7 +5,7 @@
 
     //The controllers are testable with mock objects since we used IOC to create controllers 
     //with pluggable dependencies
-    public class ControllerTests
+    public class EmployeeControllerTests
     {
     }
 }

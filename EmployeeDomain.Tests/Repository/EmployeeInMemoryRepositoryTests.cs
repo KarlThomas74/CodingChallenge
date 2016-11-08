@@ -54,21 +54,20 @@ namespace EmployeeDomain.Tests.Repository
             var expected = new Employee()
             {
                 FirstName = "Test",
-                LastName = "Employee",
-                Dependents = new List<Beneficiary>()
-                {
-                    new Beneficiary()
-                    {
-                        FirstName = "Jane",
-                        LastName = "Jungle"
-                    },
-                    new Beneficiary()
-                    {
-                        FirstName = "Tarzan",
-                        LastName = "Jungle"
-                    }
-                }
+                LastName = "Employee"
             };
+
+            expected.AddDependent(new Beneficiary()
+            {
+                FirstName = "Jane",
+                LastName = "Jungle"
+            });
+
+            expected.AddDependent(new Beneficiary()
+            {
+                FirstName = "Tarzan",
+                LastName = "Jungle"
+            });
 
             repository.Insert(expected);
             var actual = mockDataStore.Employees.Values.SingleOrDefault(e => e.FirstName == "Test");
@@ -85,23 +84,20 @@ namespace EmployeeDomain.Tests.Repository
             var expected = new Employee()
             {
                 FirstName = "Test",
-                LastName = "Employee",
-                Dependents = new List<Beneficiary>()
-                {
-                    new Beneficiary()
-                    {
-                        FirstName = "Jane",
-                        LastName = "Jungle"
-                    },
-                    new Beneficiary()
-                    {
-                        FirstName = "Tarzan",
-                        LastName = "Jungle"
-                    }
-                }
+                LastName = "Employee"
             };
 
-            repository.Insert(expected);
+            expected.AddDependent(new Beneficiary()
+            {
+                FirstName = "Jane",
+                LastName = "Jungle"
+            });
+
+            expected.AddDependent(new Beneficiary()
+            {
+                FirstName = "Tarzan",
+                LastName = "Jungle"
+            }); repository.Insert(expected);
             var actual = mockDataStore.Employees.Values.SingleOrDefault(e => e.FirstName == "Test");
 
             Assert.IsNotNull(actual);
@@ -147,8 +143,8 @@ namespace EmployeeDomain.Tests.Repository
             var expectedId = expected.Id;
             expected.FirstName = "Changed";
             expected.LastName = "RealSecret";
-            expected.Dependents[0].FirstName = "Mary";
-            expected.Dependents[0].LastName = "Poppins";
+            expected.Dependents.First().FirstName = "Mary";
+            expected.Dependents.First().LastName = "Poppins";
 
             repository.Update(expected);
 
@@ -156,64 +152,6 @@ namespace EmployeeDomain.Tests.Repository
 
             Assert.AreEqual(expected,actual);
 
-        }
-
-
-
-
-
-
-        private List<Employee> GetTestData()
-        {
-            return new List<Employee>()
-            {
-                new Employee()
-                {
-                    Id = Guid.NewGuid(),
-                    FirstName = "John",
-                    MiddleName = "D",
-                    LastName = "Doe",
-                    Cost = 2000,
-                    Dependents = new List<Beneficiary>()
-                    {
-                        new Beneficiary()
-                        {
-                            Id = Guid.NewGuid(),
-                            FirstName = "John",
-                            LastName = "Lennon"
-                        },
-                        new Beneficiary()
-                        {
-                            Id = Guid.NewGuid(),
-                            FirstName = "Paul",
-                            LastName = "McCartney"
-                        },
-                    }
-                },
-                new Employee()
-                {
-                    Id = Guid.NewGuid(),
-                    FirstName = "Jane",
-                    MiddleName = "D",
-                    LastName = "Doe",
-                    Cost = 2000,
-                    Dependents = new List<Beneficiary>()
-                    {
-                        new Beneficiary()
-                        {
-                            Id = Guid.NewGuid(),
-                            FirstName = "George",
-                            LastName = "Harrison"
-                        },
-                        new Beneficiary()
-                        {
-                            Id = Guid.NewGuid(),
-                            FirstName = "Ringo",
-                            LastName = "Starr"
-                        },
-                    }
-                }
-            };
         }
     }
 
@@ -223,7 +161,40 @@ namespace EmployeeDomain.Tests.Repository
 
         public MockDataStore()
         {
-            var employees = new List<Employee>()
+
+            var dependents1 = new List<Beneficiary>()
+            {
+                new Beneficiary()
+                {
+                    Id = Guid.NewGuid(),
+                    FirstName = "John",
+                    LastName = "Lennon"
+                },
+                new Beneficiary()
+                {
+                    Id = Guid.NewGuid(),
+                    FirstName = "Paul",
+                    LastName = "McCartney"
+                },
+            };
+
+            var dependents2 = new List<Beneficiary>()
+            {
+                new Beneficiary()
+                {
+                    Id = Guid.NewGuid(),
+                    FirstName = "George",
+                    LastName = "Harrison"
+                },
+                new Beneficiary()
+                {
+                    Id = Guid.NewGuid(),
+                    FirstName = "Ringo",
+                    LastName = "Starr"
+                },
+            };
+               
+        var employees = new List<Employee>()
             {
                 new Employee()
                 {
@@ -231,22 +202,6 @@ namespace EmployeeDomain.Tests.Repository
                     FirstName = "John",
                     MiddleName = "D",
                     LastName = "Doe",
-                    Cost = 2000,
-                    Dependents = new List<Beneficiary>()
-                    {
-                        new Beneficiary()
-                        {
-                            Id = Guid.NewGuid(),
-                            FirstName = "John",
-                            LastName = "Lennon"
-                        },
-                        new Beneficiary()
-                        {
-                            Id = Guid.NewGuid(),
-                            FirstName = "Paul",
-                            LastName = "McCartney"
-                        },
-                    }
                 },
                 new Employee()
                 {
@@ -254,25 +209,11 @@ namespace EmployeeDomain.Tests.Repository
                     FirstName = "Jane",
                     MiddleName = "D",
                     LastName = "Doe",
-                    Cost = 2000,
-                    Dependents = new List<Beneficiary>()
-                    {
-                        new Beneficiary()
-                        {
-                            Id = Guid.NewGuid(),
-                            FirstName = "George",
-                            LastName = "Harrison"
-                        },
-                        new Beneficiary()
-                        {
-                            Id = Guid.NewGuid(),
-                            FirstName = "Ringo",
-                            LastName = "Starr"
-                        },
-                    }
                 }
             };
 
+            dependents1.ForEach(d => employees[0].AddDependent(d));
+            dependents2.ForEach(d => employees[1].AddDependent(d));
             Employees = employees.ToDictionary(k => k.Id.Value, v => v);
         }
     }

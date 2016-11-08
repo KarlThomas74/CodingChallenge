@@ -12,32 +12,31 @@ namespace BenefitsRUs.Models.Mappers
                 FirstName = beneficiaryViewModel.FirstName,
                 MiddleName = beneficiaryViewModel.MiddleName,
                 LastName = beneficiaryViewModel.LastName,
-                Cost = beneficiaryViewModel.Cost
             };
         }
 
         public static Employee ToEmployee(this EmployeeViewModel employeeViewModel)
         {
             Employee employee = (Employee) employeeViewModel.ToBeneficiary();
-            employee.Dependents = employeeViewModel.Dependents.Select(d => d.ToBeneficiary()).ToList();
+            employeeViewModel.Dependents.ForEach(d => employee.AddDependent(d.ToBeneficiary()));
             return employee;
         }
 
-        public static BeneficiaryViewModel ToBeneficiarViewModel(this Beneficiary beneficiary)
+        private static BeneficiaryViewModel ToBeneficiarViewModel(this Beneficiary beneficiary)
         {
             return new BeneficiaryViewModel()
             {
                 FirstName = beneficiary.FirstName,
                 MiddleName = beneficiary.MiddleName,
                 LastName = beneficiary.LastName,
-                Cost = beneficiary.Cost
+                Cost = beneficiary.BenefitCost
             };
         }
 
         public static EmployeeViewModel ToEmployeeViewModel(this Employee employee)
         {
             EmployeeViewModel employeeViewModel = (EmployeeViewModel)employee.ToBeneficiarViewModel();
-            employee.Dependents = employeeViewModel.Dependents.Select(d => d.ToBeneficiary()).ToList();
+            employeeViewModel.Dependents = employee.Dependents.Select(d => d.ToBeneficiarViewModel()).ToList();
             return employeeViewModel;
         }
 

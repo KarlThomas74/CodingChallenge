@@ -53,6 +53,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EmployeeServiceTests.cs" />
+    <Compile Include="Model\EmployeeTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\EmployeeInMemoryRepositoryTests.cs" />
   </ItemGroup>
